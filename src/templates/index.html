@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Honeyport Dashboard</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<style>
+  body {
+    background: #0d0d0d;
+    color: #00ff66;
+    font-family: 'Courier New', monospace;
+    margin: 0;
+    padding: 20px;
+  }
+  h1 {
+    text-align: center;
+    letter-spacing: 4px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+  }
+  .panel {
+    border: 1px solid #00ff66;
+    border-radius: 4px;
+    padding: 12px;
+    background: #111;
+  }
+  .panel h2 {
+    font-size: 14px;
+    margin-top: 0;
+    letter-spacing: 2px;
+  }
+  #map { height: 320px; border-radius: 4px; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid #033; }
+  .timeline { grid-column: 1 / span 2; }
+</style>
+</head>
+<body>
+  <h1>HONEYPORT DASHBOARD</h1>
+
+  <div class="grid">
+    <div class="panel">
+      <h2>LIVE ATTACK MAP</h2>
+      <div id="map"></div>
+    </div>
+    <div class="panel">
+      <h2>TOP ATTACKING IPs</h2>
+      <table>
+        <tbody id="top-ips"></tbody>
+      </table>
+    </div>
+    <div class="panel timeline">
+      <h2>ATTACK TIMELINE (24H)</h2>
+      <canvas id="timeline-chart" height="80"></canvas>
+    </div>
+  </div>
+
+<script>
+const map = L.map('map').setView([37.09, -95.71], 3);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; OpenStreetMap contributors'
+}).addTo(map);
+
+let chart = null;
+
+async function refresh() {
+  const res = await fetch('/api/data');
+  const data = await res.json();
+
+  // Top attacking IPs
+  const tbody = document.getElementById('top-ips');
+  tbody.innerHTML = '';
+  data.top_ips.forEach(([ip, hits]) => {
+    const row = document.createElement('tr');
+    row.innerHTML = `<td>${ip}</td><td style="text-align:right">${hits}</td>`;
+    tbody.appendChild(row);
+  });
+
+  // Map markers
+  data.markers.forEach(m => {
+    L.circleMarker([m.lat, m.lon], { color: '#ff3333', radius: 8 + Math.min(m.hits, 20) })
+      .addTo(map)
+      .bindPopup(`${m.ip}<br>${m.hits} hits`);
+  });
+
+  // Timeline chart
+  const labels = Object.keys(data.timeline);
+  const values = Object.values(data.timeline);
+  const ctx = document.getElementById('timeline-chart');
+  if (chart) chart.destroy();
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{ label: 'Attacks', data: values, borderColor: '#00ff66', backgroundColor: 'transparent' }]
+    },
+    options: {
+      scales: {
+        x: { ticks: { color: '#00ff66' } },
+        y: { ticks: { color: '#00ff66' }, beginAtZero: true }
+      },
+      plugins: { legend: { labels: { color: '#00ff66' } } }
+    }
+  });
+}
+
+refresh();
+setInterval(refresh, 10000);
+</script>
+</body>
+</html>

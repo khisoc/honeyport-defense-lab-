@@ -1,0 +1,19 @@
+2025-10-20 03:31:13,100 - INFO - Honeyport 'HTTPS Service' started on port 8443
+2025-10-20 03:31:13,200 - INFO - Honeyport 'SSH Service' started on port 9000
+2025-10-20 03:31:13,301 - INFO - Honeyport 'Web Admin' started on port 9090
+2025-10-20 03:31:13,401 - INFO - Honeyport 'Mystery Port' started on port 9999
+2025-10-20 03:33:30,180 - WARNING - INTRUSION DETECTED: 127.0.0.1:37306 probed HTTP Admin service on port 8080
+2025-10-20 03:33:30,180 - INFO - Data from 127.0.0.1 on port 8080: GET / HTTP/1.1
+Host: localhost
+
+2025-10-20 03:33:49,548 - WARNING - INTRUSION DETECTED: 127.0.0.1:55000 probed SSH Service service on port 9000
+2025-10-20 03:38:48,829 - WARNING - INTRUSION DETECTED: 127.0.0.1:56028 probed HTTP Admin service on port 8080
+2025-10-20 03:38:49,831 - CRITICAL - SECURITY ALERT: {"alert_type": "repeated_offender", "source_ip": "127.0.0.1", "total_attempts": 3, "recent_attacks": 3, "ports_targeted": [8080, 9000], "first_seen": "2025-10-20T03:33:30.180273", "last_seen": "2025-10-20T03:38:48.829546"}
+2025-10-20 03:38:50,350 - WARNING - INTRUSION DETECTED: 127.0.0.1:50304 probed HTTPS Service service on port 8443
+2025-10-20 03:38:51,352 - CRITICAL - SECURITY ALERT: {"alert_type": "repeated_offender", "source_ip": "127.0.0.1", "total_attempts": 4, "recent_attacks": 4, "ports_targeted": [8080, 9000, 8443], "first_seen": "2025-10-20T03:33:30.180273", "last_seen": "2025-10-20T03:38:50.349931"}
+2025-10-20 03:38:51,864 - WARNING - INTRUSION DETECTED: 127.0.0.1:33238 probed SSH Service service on port 9000
+2025-10-20 03:38:52,869 - CRITICAL - SECURITY ALERT: {"alert_type": "repeated_offender", "source_ip": "127.0.0.1", "total_attempts": 5, "recent_attacks": 5, "ports_targeted": [8080, 9000, 8443], "first_seen": "2025-10-20T03:33:30.180273", "last_seen": "2025-10-20T03:38:51.864932"}
+2025-10-20 03:38:53,384 - WARNING - INTRUSION DETECTED: 127.0.0.1:45860 probed Web Admin service on port 9090
+2025-10-20 03:38:54,387 - CRITICAL - SECURITY ALERT: {"alert_type": "repeated_offender", "source_ip": "127.0.0.1", "total_attempts": 6, "recent_attacks": 6, "ports_targeted": [8080, 9000, 8443, 9090], "first_seen": "2025-10-20T03:33:30.180273", "last_seen": "2025-10-20T03:38:53.384931"}
+2025-10-20 03:38:54,906 - WARNING - INTRUSION DETECTED: 127.0.0.1:59722 probed Mystery Port service on port 9999
+2025-10-20 03:38:54,906 - CRITICAL - SECURITY ALERT: {"alert_type": "repeated_offender", "source_ip": "127.0.0.1", "total_attempts": 7, "recent_attacks": 7, "ports_targeted": [9090, 9000, 9999, 8080, 8443], "first_seen": "2025-10-20T03:33:30.180273", "last_seen": "2025-10-20T03:38:54.906198"}

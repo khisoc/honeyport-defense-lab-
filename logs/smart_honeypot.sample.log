@@ -1,0 +1,5 @@
+2025-10-21 05:22:40,638 - INFO - Smart honeypot started on port 9999
+2025-10-21 05:57:21,912 - INFO - Smart honeypot started on port 9999
+2025-10-21 06:01:12,789 - WARNING - SMART ALERT: 127.0.0.1 connection attempt #1 on port 9999
+2025-10-21 06:11:49,231 - INFO - Smart honeypot started on port 9999
+2025-10-21 06:19:05,422 - WARNING - SMART ALERT: 127.0.0.1 connection attempt #1 on port 9999
